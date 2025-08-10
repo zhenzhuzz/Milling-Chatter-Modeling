@@ -59,16 +59,14 @@ $x_F \in (0,1]$ 表示非线性程度，$g_j(\phi_j)$控制刀齿在切削区间
 总切削力向量：
 
 $$
-\mathbf{F}_t(t) =
-a_p \sum_{j=0}^{z-1} g_j(\phi_j)
-\left[h_j(t)\right]^{x_F}
-\mathbf{S}(t)
-\begin{bmatrix}
-K_t \\ K_r
-\end{bmatrix}
+{\mathbf{F}}_{\mathrm{t}}\left( t\right)  = {a}_{\mathrm{p}}\mathop{\sum }\limits_{{j = 0}}^{{z - 1}}{g}_{j}\left( {{\phi }_{j}\left( t\right) }\right) {\left( {h}_{j,\text{ stat }}\left( t\right)  + {h}_{j,\text{ dyn }}\left( t\right) \right) }^{{x}_{F}}\mathbf{S}\left( t\right) \left\lbrack  \begin{array}{l} {K}_{\mathrm{t}} \\  {K}_{\mathrm{r}} \end{array}\right\rbrack
 $$
 
-$\mathbf{S}(t)$为旋转坐标系到机床坐标系的几何变换矩阵。
+$$
+\mathbf{S}\left( t\right)  = \left\lbrack  \begin{matrix}  - \cos {\phi }_{j}\left( t\right) &  - \sin {\phi }_{j}\left( t\right) \\  \sin {\phi }_{j}\left( t\right) &  - \cos {\phi }_{j}\left( t\right)  \end{matrix}\right\rbrack
+$$
+
+为旋转坐标系到机床坐标系的几何变换矩阵。
 
 ---
 
@@ -116,7 +114,7 @@ $$
 颤振频率与 Floquet 乘子关系：
 
 $$
-f_c = \frac{\operatorname{Im}(\ln \mu)}{2\pi T}
+f_c = \frac{Im(\ln \mu)}{2\pi T}
 $$
 
 频谱成分：
@@ -235,17 +233,3 @@ $$k_{\text{new}} = \left\lfloor \frac{f_{\text{chat}} \cdot 60}{z n} \right\rflo
 3. Tobias, S.A. Machine-Tool Vibration, Blackie & Son, 1965.
     
 
-```
-
----
-
-这样这个 README：  
-- 所有公式都用 `$$...$$` 包裹，可以在支持 MathJax 的环境渲染。  
-- 论文第三、四章的关键推导、公式、图片、直观类比都已经放进去。  
-- 代码运行方法和功能介绍都一并包含。  
-- GitHub 用户即使不看论文，也能直接理解理论背景和代码作用。  
-
-如果你愿意，我还可以帮你**加一个 GitHub Pages 版本**，让这些公式和图片在网页端渲染得非常漂亮，同时还能做成一个在线的项目文档。这样别人看起来就和读在线教材一样。  
-
-你要我帮你做这个 Pages 版吗？这样 README 就是简略版，网页是完整版。
-```
