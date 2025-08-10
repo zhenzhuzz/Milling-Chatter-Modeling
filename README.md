@@ -12,19 +12,24 @@
 
 ---
 
-## 理论背景
+## 理论背景：铣削颤振动力学建模与稳定性分析
 
-### 铣削颤振机理
-铣削颤振是一种 **自激振动**，由加工系统内部的能量反馈回路驱动，无需外部周期激励。其核心机制是 **再生效应（Regenerative Effect）**：
+### 1. 再生效应机理
+铣削是具有时滞特性的动态过程：相邻刀齿在同一位置切削时，由于刀具–工件的弹性变形，会产生**动态位移差**，改变切屑厚度，引发自激振动（再生颤振）。
+
+总切屑厚度：
 
 $$
 h_j(t) = h_{j,\text{stat}}(t) + h_{j,\text{dyn}}(t)
 $$
 
-其中：
+静态切屑厚度：
+
 $$
 h_{j,\text{stat}}(t) = f_z \sin \phi_j(t)
 $$
+
+动态切屑厚度：
 
 $$
 h_{j,\text{dyn}}(t) =
@@ -34,25 +39,12 @@ h_{j,\text{dyn}}(t) =
 \left[ \mathbf{v}(t) - \mathbf{v}(t-\tau) \right]
 $$
 
-- **稳定能量源**：主轴电机稳定供能。
-- **调制机制 M**：前一刀齿在工件表面留下的波纹，改变后一刀齿的瞬时切削厚度。
-- **周期性力**：切削厚度波动使切削力周期变化，反作用于刀具–工件系统。
-- **反馈回路**：振动 → 切削厚度变化 → 切削力变化 → 更大振动。
+其中 $\tau=\frac{60}{zn}$ 为相邻刀齿通过周期，$z$ 为齿数，$n$ 为主轴转速。
 
 ---
 
-### 铣削过程动力学建模
-将主轴–刀柄–刀具系统简化为二维质量–弹簧–阻尼模型：
-
-$$
-\dot{\mathbf{x}}(t) = \mathbf{A}\mathbf{x}(t) + \mathbf{B} \mathbf{F}(t)
-$$
-
-$$
-\mathbf{v}(t) = \mathbf{C} \mathbf{x}(t)
-$$
-
-切削力模型（经验指数形式）：
+### 2. 切削力模型
+单齿切向/径向切削力（经验指数型）：
 
 $$
 F_{\text{tang},j} = g_j(\phi_j) K_t a_p h_j(t)^{x_F}
@@ -62,37 +54,88 @@ $$
 F_{\text{rad},j} = g_j(\phi_j) K_r a_p h_j(t)^{x_F}
 $$
 
-综合得到含时滞项的铣削动力学方程：
+$x_F \in (0,1]$ 表示非线性程度，$g_j(\phi_j)$控制刀齿在切削区间的作用。
+
+总切削力向量：
 
 $$
-\dot{\mathbf{x}}(t) =
-\mathbf{A} \mathbf{x}(t) +
-\mathbf{B} a_p \sum_{j=0}^{z-1} g_j(\phi_j(t))
-\left\{
-h_{j,\text{stat}}(t) + \dots
-\right\}
+\mathbf{F}_t(t) =
+a_p \sum_{j=0}^{z-1} g_j(\phi_j)
+\left[h_j(t)\right]^{x_F}
+\mathbf{S}(t)
+\begin{bmatrix}
+K_t \\ K_r
+\end{bmatrix}
 $$
 
-这是一个 **变时滞、非线性、周期系数的时滞微分方程**（TV-DDE）。
+$\mathbf{S}(t)$为旋转坐标系到机床坐标系的几何变换矩阵。
 
 ---
 
-### 稳定性分析
-- **Floquet 理论**：分析周期解的稳定性，计算 Floquet 乘子 $\mu$。
-- **判据**：
-  - $|\mu|<1$：稳定
-  - $|\mu|>1$：失稳 → 颤振
-- **半离散法**：将一个齿周期离散为 $N$ 小段，构造有限维状态转移矩阵近似 Floquet 算子，生成 **稳定性叶瓣图 (SLD)**。
+### 3. 主轴–刀具系统动力学
+二维质量–弹簧–阻尼模型（$x$、$y$方向）：
 
-示例稳定性叶瓣图（不同转速–切削深度下的稳定/不稳定区域）：
-![Stability Lobes Example](Media/stability_lobes_example.png)
+$$
+\dot{\mathbf{x}}(t) = \mathbf{A} \mathbf{x}(t) + \mathbf{B} \mathbf{F}(t)
+$$
+
+$$
+\mathbf{v}(t) = \mathbf{C} \mathbf{x}(t)
+$$
+
+与切削力模型耦合，得到含时滞的铣削动力学方程（TV-DDE）：
+
+$$
+\dot{\mathbf{x}}\left( t\right)  = \mathbf{A}\mathbf{x}\left( t\right)  + \mathbf{B}{a}_{\mathrm{p}}\mathop{\sum }\limits_{{j = 0}}^{{z - 1}}{g}_{j}\left( {{\phi }_{j}\left( t\right) }\right) {\left\{  {h}_{j,\text{ stat }}\left( t\right)  + \left\lbrack  \begin{array}{ll} \sin {\phi }_{j}\left( t\right) & \cos {\phi }_{j}\left( t\right)  \end{array}\right\rbrack  \left( \mathbf{C}\mathbf{x}\left( t\right)  - \mathbf{C}\mathbf{x}\left( t - {\tau }_{j}\left( t\right) \right) \right) \right\}  }^{{x}_{F}}\mathbf{S}\left( t\right) \left\lbrack  \begin{matrix} {K}_{t} \\  {K}_{r} \end{matrix}\right\rbrack
+$$
+
 
 ---
 
-### 颤振类型与分岔
-- **次级 Hopf 分岔**：出现新频率成分，准周期运动（颤振常见形式）。
-- **倍周期分岔**：出现 $1/2$ 或 $1/4$ 主轴转速频率成分。
-- 铣削过程主要关注这两类分岔。
+### 4. 稳定性分析流程
+1. **周期解与线性化**：静态切屑厚度周期性 → 刀具运动周期解 $v_p(t)$；小扰动 $v_u(t)$ 线性化为：
+
+$$
+\dot{\widetilde{\mathbf{x}}}(t) =
+\mathbf{P}(t) \widetilde{\mathbf{x}}(t) +
+\mathbf{Q}(t) \widetilde{\mathbf{x}}(t-\tau)
+$$
+
+2. **Floquet 理论**：构造单周期转移算子 $\mathbf{\Phi}_T$，其特征值 $\mu$ 为 Floquet 乘子：
+   - $|\mu|<1$ 稳定
+   - $|\mu|>1$ 失稳（颤振）
+
+3. **半离散法**：将周期离散为 $N$ 小段，近似 $\mathbf{P}(t),\mathbf{Q}(t)$ 为分段常数，构造有限维转移矩阵 $\mathbf{U}$ 近似 $\mathbf{\Phi}_T$，求解临界条件 $|\mu|=1$ → **稳定性叶瓣图**（SLD）。
+
+---
+
+### 5. 分岔类型与频率特征
+- **次级 Hopf 分岔**：$\mu$ 成对复数跨单位圆 → 准周期运动，出现基本颤振频率 $f_c$。
+- **倍周期分岔**：$\mu=-1$ → 周期加倍，出现 $f_{\mathrm{sp}}/2$ 等分数谐波。
+
+颤振频率与 Floquet 乘子关系：
+
+$$
+f_c = \frac{\operatorname{Im}(\ln \mu)}{2\pi T}
+$$
+
+频谱成分：
+- 主轴转速谐波 $kf_{\mathrm{sp}}$
+- 刀齿通过频率谐波 $kf_{\mathrm{tpe}}$
+- 系统固有频率 $f_d$
+- 分岔特征频率 $f_H, f_{PD}$
+
+---
+
+### 6. 颤振演变阶段
+1. **稳定切削**：$f_{\mathrm{sp}}$、$f_{\mathrm{tpe}}$ 及谐波占主导，振幅低。
+2. **颤振萌生**：$f_H$ 或 $f_{PD}$ 幅值上升，接近 $f_d$；可见分数谐波。
+3. **颤振完全发展**：主导颤振频率能量大幅增强，振幅剧增，表面出现波纹。
+
+---
+
+以上建模与分析为项目中 **MATLAB 时域仿真**、**稳定性叶瓣预测**、**颤振监测与调速策略** 提供了理论基础。
+
 
 ---
 
@@ -175,7 +218,7 @@ $$k_{\text{new}} = \left\lfloor \frac{f_{\text{chat}} \cdot 60}{z n} \right\rflo
 运行环境
 ----
 
-* MATLAB R2020a+
+* MATLAB R2023a及以上
     
 * Signal Processing Toolbox
     
