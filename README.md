@@ -53,14 +53,17 @@ $$
 $$
 
 切削力模型（经验指数形式）：
+
 $$
 F_{\text{tang},j} = g_j(\phi_j) K_t a_p h_j(t)^{x_F}
 $$
+
 $$
 F_{\text{rad},j} = g_j(\phi_j) K_r a_p h_j(t)^{x_F}
 $$
 
 综合得到含时滞项的铣削动力学方程：
+
 $$
 \dot{\mathbf{x}}(t) =
 \mathbf{A} \mathbf{x}(t) +
@@ -111,9 +114,8 @@ $$
 ### 1. 铣削颤振仿真
 - **文件**：`m050_milling_Time_domain_Sim_01.m`
 - 主函数：
-  ```matlab
+
   milling_simulation(rpm, cutDepth, feedPerTooth, numTeeth, simTime)
-```
 
 * 功能：
     
@@ -125,9 +127,9 @@ $$
         
 * 示例：
     
-    ```matlab
+
     milling_simulation([4500, 8200, 10000], 2e-3, 0.05e-3, 4, 1.0);
-    ```
+
     
 
 * * *
