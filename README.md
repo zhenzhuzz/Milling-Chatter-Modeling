@@ -20,12 +20,13 @@ MATLAB modeling and simulation of milling chatter: regenerative effect DDEs, sta
 
 - **稳定能量源**：主轴电机稳定供能。
 - **调制机制 M**：前一刀齿在工件表面留下的波纹，改变后一刀齿的瞬时切削厚度：
-  
+  $$
   \[
   h_j(t) = h_{j,\text{stat}}(t) + h_{j,\text{dyn}}(t)
   \]
-  
+  $$
   其中：
+  $$
   \[
   h_{j,\text{stat}}(t) = f_z \sin \phi_j(t)
   \]
@@ -36,7 +37,7 @@ MATLAB modeling and simulation of milling chatter: regenerative effect DDEs, sta
   \end{bmatrix}
   \left[ \mathbf{v}(t) - \mathbf{v}(t-\tau) \right]
   \]
-  
+  $$
 - **周期性力**：切削厚度波动使切削力周期变化，反作用于刀具–工件系统。
 - **反馈回路**：振动 → 切削厚度变化 → 切削力变化 → 更大振动。
 
